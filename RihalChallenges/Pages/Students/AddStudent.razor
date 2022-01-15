@@ -1,0 +1,181 @@
+﻿@page "/AddStudent"
+@inject StudentService studentService
+@inject ClassService classService
+@inject CountryService countryService
+@inject NavigationManager NavigationManager
+
+<br />
+<h2>Add New Student</h2>
+<hr />
+
+<MudCard>
+	<MudForm Model="@model" @ref="@form">
+		<MudCardContent>
+
+            <MudSelect @bind-Value="@model.ClassId" Label="Choose Student Class" Variant="Variant.Outlined">
+               
+                @foreach(var item in Classes)
+                {
+                     <MudSelectItem Value="@item.Id">@item.Name</MudSelectItem>
+                }
+                
+            </MudSelect>
+            <br />
+            <MudSelect @bind-Value="@model.CountryId" Label="Choose Student Country" Variant="Variant.Outlined">
+               
+                @foreach(var item in Countries)
+                {
+                     <MudSelectItem Value="@item.Id">@item.Name</MudSelectItem>
+                }
+                
+            </MudSelect>
+            <br />
+            <MudTextField @bind-Value="@model.Name"
+							  Validation="@(studentValidator.ValidateValue)"
+							  For="@(() => model.Name)"
+							  Immediate="true"
+							  Label="Name" />
+            
+            <br />
+            <MudDatePicker  @bind-Date="@model.BirthDate"
+                            MinDate = "@(new DateTime(1900,01,01))"
+                            MaxDate = "@(DateTime.Now)"
+                            PickerVariant="PickerVariant.Dialog"
+                            Validation="@(studentValidator.ValidateValue)"
+                            For="@(()=> model.BirthDate)"
+                            Label="Birth Date"/>
+
+
+        </MudCardContent>
+	</MudForm>
+    <MudCardActions>
+        <MudButton Variant="Variant.Filled" Color="Color.Primary" Class="ml-auto" OnClick="@(async () => await Submit())">Save</MudButton>
+    </MudCardActions>
+</MudCard>
+
+@code {
+
+    [Inject] ISnackbar Snackbar { get; set; }
+
+    MudForm form;
+
+    StudentDTO model = new StudentDTO();
+
+    List<Class> Classes = new();
+    List<Country> Countries = new();
+
+    StudentValidator studentValidator = new StudentValidator();
+
+
+    protected override async Task OnInitializedAsync()
+    {
+        Classes = (await classService.GetAll()).ToList();
+        Countries = (await countryService.GetAll()).ToList();
+
+
+
+        if(Classes.Count > 0)
+        {
+            model.ClassId = Classes[0].Id;
+        }
+
+        if(Countries.Count > 0)
+        {
+            model.CountryId = Countries[0].Id;
+        }
+    }
+
+    private async Task Submit()
+    {
+        await form.Validate();
+
+        if (form.IsValid)
+        {
+            var isCreated = await studentService.Create(model);
+
+            if (isCreated)
+            {
+                Snackbar.Add("Submited!");
+            }
+            else
+            {
+                Snackbar.Add("Error!");
+            }
+            
+        }
+    }
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+@*
+<form>
+    <div class="row">
+        <div class="col-md-8">
+            <div class="form-group">
+                <label for="Name" class="control-label">Name</label>
+                <input form="Name" class="form-control" @bind="@student.Name" />
+            </div>
+            <div class="form-group">
+                <label for="Gender" class="control-label"></label>
+                <select @bind="@student.BirthDate" class="form-control">
+                    <option value="">-Select Gender</option>
+                    <option value="Male">Male</option>
+                    <option value="Female">Female</option>
+                </select>
+            </div>
+
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-4">
+            <div class="form-group">
+                <input type="button" class="btn btn-primary" @onclick="@CreateStudent" value="Save"/>
+                <input type="button" class="btn btn-primary" @onclick="@Cancel" value="Cancel"/>
+            </div>
+        </div>
+    </div>
+</form>
+
+@code {
+    Student student = new Student();
+    protected async void CreateStudent()
+    {
+        await studentService.Create(student);
+        NavigationManager.NavigateTo("Studentss");
+    }
+    void Cancel()
+    {
+        NavigationManager.NavigateTo("Employees");
+    }
+}*@

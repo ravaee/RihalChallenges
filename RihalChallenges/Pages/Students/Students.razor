@@ -1,0 +1,40 @@
+﻿@page "/Students"
+
+@inject StudentService studentService
+
+@if(_Students is not null)
+{
+    <NavLink class="nav-link" href="AddStudent">
+        <span class="oi oi-plus" aria-hidden="true">Add New Student</span>
+
+    </NavLink>
+    
+}
+
+<h1>Students Info</h1>
+@if (_Students is null)
+{
+    <p><em>Loading... !</em></p>
+}
+else
+{
+
+    <StudentList Students="@_Students"></StudentList>
+
+}
+
+
+@code {
+
+    List<Common.Models.Student>? _Students;
+
+    protected async override Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            _Students = (await Task.Run(() => studentService.GetAll())).ToList();
+            StateHasChanged();
+        }
+        
+    }
+}

@@ -1,0 +1,30 @@
+﻿<MudTable Items="@Students" FixedHeader="true" FixedFooter="true" Height="400px">
+    <HeaderContent>
+        <MudTh>Student FullName</MudTh>
+        <MudTh>Country</MudTh>
+        <MudTh>Class</MudTh>
+        <MudTh>BirthDate</MudTh>
+    </HeaderContent>
+    <RowTemplate>
+        <MudTd DataLabel="Student FullName">@context.Name</MudTd>
+        <MudTd DataLabel="Country">@context.Country.Name</MudTd>
+        <MudTd DataLabel="Class">@context.Class.Name</MudTd>
+        <MudTd DataLabel="BirthDate">@context.BirthDate</MudTd>
+    </RowTemplate>
+    <FooterContent>
+    </FooterContent>
+    <PagerContent>
+        <MudTablePager PageSizeOptions="new int[]{50, 100}" />
+    </PagerContent>
+</MudTable>
+
+@code 
+{
+ 
+    [Parameter]
+    public EventCallback OnClick { get; set; }
+
+    [Parameter]
+    public List<Common.Models.Student> Students { get; set; }
+
+}
