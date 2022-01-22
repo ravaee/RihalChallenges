@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Common.Models;
+using Persistence.Specifications;
+using System;
 using System.Collections.Generic;
 using System.Linq.Expressions;
 using System.Text;
@@ -6,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Persistence.Interface.Repository
 {
-    public interface IBaseRepository<TEntity> where TEntity : class
+    public interface IBaseRepository<TEntity> where TEntity : BaseModel
     {
         Task<TEntity> Get(int id);
         Task<IEnumerable<TEntity>> GetAll();
@@ -18,5 +20,7 @@ namespace Persistence.Interface.Repository
         void Remove(TEntity entity);
         void RemoveRange(IEnumerable<TEntity> entities);
         Task<bool> Any(int Id);
+
+        Task<IEnumerable<TEntity>> ListAsync(ISpecification<TEntity> spec);
     }
 }

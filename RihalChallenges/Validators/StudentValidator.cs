@@ -11,7 +11,8 @@ namespace RihalChallenges.Validators
                 .NotEmpty()
                 .Length(1, 100);
 
-            RuleFor(x => x.BirthDate)
+
+            RuleFor(x => ((x == null) ? DateTime.Now : x.BirthDate))
                 .NotEmpty()
                 .ExclusiveBetween(new DateTime(1900,01,01), DateTime.Now);
 
@@ -25,6 +26,7 @@ namespace RihalChallenges.Validators
 
         public Func<object, string, Task<IEnumerable<string>>> ValidateValue => async (model, propertyName) =>
         {
+
             var result = await ValidateAsync(ValidationContext<StudentDTO>.CreateWithOptions((StudentDTO)model, x => x.IncludeProperties(propertyName)));
             if (result.IsValid)
                 return Array.Empty<string>();

@@ -1,29 +1,29 @@
-﻿using Common.Models;
+﻿using AutoMapper;
+using Common.Models;
 using Microsoft.EntityFrameworkCore;
 using Persistence.Context;
+using Persistence.Specifications.EntitySpecs;
+using Persistence.UnitOfWork;
+using Common.Extenstions;
 
 namespace Persistence.Services
 {
-    public class CountryService
+    public class CountryService: BaseService
     {
-        private readonly ApplicationDbContext _context;
-        public CountryService(ApplicationDbContext context)
+        public CountryService(IMapper mapper, IRepositoryUnitOfWork unitOfWork) : base(mapper, unitOfWork)
         {
-            _context = context;
         }
 
-        public async Task<bool> Create(Country country)
+        public async Task<IEnumerable<CountryDTO>> GetAll()
         {
-
-            await _context.Countries.AddAsync(country);
-            await _context.SaveChangesAsync();
-
-            return true;
+            var countries = await _unitOfWork.CountryRepository.GetAll();
+            return countries.ToListDTO(_mapper);
         }
 
-        public async Task<IEnumerable<Country>> GetAll()
+        public async Task<IEnumerable<CountryDTO>> GetAllWithAtListOneStudent()
         {
-            return await _context.Countries.ToListAsync();
+            var countries = await _unitOfWork.CountryRepository.ListAsync(new CountryWithAtListOneStudentSpecification());
+            return countries.ToListDTO(_mapper);
         }
 
     }

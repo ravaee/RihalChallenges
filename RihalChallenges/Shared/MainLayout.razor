@@ -1,57 +1,78 @@
-﻿@*@inherits LayoutComponentBase
-
-<PageTitle>RihalChallenges</PageTitle>
-
-<div class="page">
-    <div class="sidebar">
-        <NavMenu />
-    </div>
-
-    <main>
-        <div class="top-row px-4">
-            <a href="https://docs.microsoft.com/aspnet/" target="_blank">About</a>
-        </div>
-
-        <article class="content px-4">
-            @Body
-        </article>
-    </main>
-</div>*@
-
-@inherits LayoutComponentBase
+﻿@inherits LayoutComponentBase
+@inject NavigationManager navigationManager;
 
 <MudThemeProvider Theme="_currentTheme" />
-<MudDialogProvider/>
-<MudSnackbarProvider/>
+<MudDialogProvider />
+<MudSnackbarProvider />
 
 <MudLayout>
-    <MudAppBar>
+    <AuthorizeView>
+        <Authorized>
+            <MudAppBar>
 
-        <MudIconButton Icon="@Icons.Material.Filled.Menu" Color="Color.Inherit" Edge="Edge.Start" OnClick="@((e) => DrawerToggle())" />
-        Rihal Sample Project
-        <MudSpacer />
-        @if (_isLightMode)
-        {
-            <MudIconButton Icon="@Icons.Material.Filled.Brightness4" cEdge="Edge.End" OnClick="@ToggleTheme" />
-        }
-        else
-        {
-            <MudIconButton Icon="@Icons.Material.Filled.Brightness5" Color="Color.Inherit" OnClick="@ToggleTheme" />
-        }
-        
-    </MudAppBar>
-    <MudDrawer @bind-Open="@_drawerOpen">
-        <NavMenu/>
-    </MudDrawer>
-    <MudMainContent>
-        <MudContainer MaxWidth="MaxWidth.ExtraLarge">
-            @Body
-        </MudContainer>
-    </MudMainContent>
+
+                <MudIconButton Icon="@Icons.Material.Filled.Menu" Color="Color.Inherit" Edge="Edge.Start" OnClick="@((e) => DrawerToggle())" />
+
+                <MudSpacer />
+                @if (_isLightMode)
+                {
+                    <MudIconButton Icon="@Icons.Material.Filled.ModeNight" Color="Color.Inherit" cEdge="Edge.End" OnClick="@ToggleTheme" />
+                }
+                else
+                {
+                    <MudIconButton Icon="@Icons.Material.Filled.LightMode" Color="Color.Inherit"  OnClick="@ToggleTheme" />
+                }
+
+                Logout
+                <MudIconButton Icon="@Icons.Material.Filled.Logout" Color="Color.Inherit" OnClick="@Logout" />
+            </MudAppBar>
+            <MudDrawer @bind-Open="@_drawerOpen" Color="Color.Primary">
+                <MudDrawerHeader>
+                    <MudText Typo="Typo.h6">Rihal Challenges</MudText>
+                 </MudDrawerHeader>
+                <NavMenu></NavMenu>
+            </MudDrawer>
+            <MudMainContent>
+                <MudContainer MaxWidth="MaxWidth.ExtraLarge">
+
+                    @Body
+
+                </MudContainer>
+            </MudMainContent>
+        </Authorized>
+        <NotAuthorized>
+
+                <MudContainer MaxWidth="MaxWidth.ExtraLarge">
+                    <RihalChallenges.Pages.Login></RihalChallenges.Pages.Login>
+                </MudContainer>
+
+        </NotAuthorized>
+    </AuthorizeView>
+
+
 </MudLayout>
 
 @code {
 
+    [CascadingParameter] protected Task<AuthenticationState> AuthStat { get; set; }
+
+    bool authenticated;
+
+    protected async override Task OnInitializedAsync()
+    {
+
+        var authState = await AuthStat;
+        var user = authState.User;
+
+
+        authenticated = user.Identity?.IsAuthenticated ?? false;
+        
+    }
+
+    public void Logout()
+    {
+        navigationManager.NavigateTo("/Logout", true);
+    }
 }
 
 @code {
@@ -68,7 +89,7 @@
     {
         _isLightMode = !_isLightMode;
 
-        if(!_isLightMode)
+        if (!_isLightMode)
         {
             _currentTheme = GenerateDarkTheme();
         }
@@ -78,20 +99,20 @@
         }
     }
 
-    private MudTheme GenerateDarkTheme() => 
+    private MudTheme GenerateDarkTheme() =>
         new MudTheme
-        {
-            Palette = new Palette()
             {
-                Black = "#27272f",
-                Background = "#32333d",
-                BackgroundGrey = "#27272f",
-                Surface = "#373740",
-                TextPrimary = "#ffffffb3",
-                TextSecondary = "rgba(255,255,255, 0.50)",
-                Primary = "#27272f",
-                AppbarBackground = "#27272f"
-               
-            }
-        };
+                Palette = new Palette()
+                {
+                    Black = "#27272f",
+                    Background = "#32333d",
+                    BackgroundGrey = "#27272f",
+                    Surface = "#373740",
+                    TextPrimary = "#ffffffb3",
+                    TextSecondary = "rgba(255,255,255, 0.50)",
+                    Primary = "#27272f",
+                    AppbarBackground = "#27272f"
+
+                }
+            };
 }

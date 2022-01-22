@@ -1,10 +1,13 @@
 ﻿
 <MudNavMenu>
-    <MudNavLink Href="/" Match="NavLinkMatch.All">Dashboard</MudNavLink>
-    <MudNavLink Href="/students" Match="NavLinkMatch.Prefix">Students</MudNavLink>
-    <MudNavGroup Title="Settings" Expanded="true">
-        <MudNavLink Href="/users"  Match="NavLinkMatch.Prefix">Users</MudNavLink>
-        <MudNavLink Href="/security"  Match="NavLinkMatch.Prefix">Security</MudNavLink>
+    <MudNavLink Href="/" Match="NavLinkMatch.All">Overview</MudNavLink>
+    <MudNavGroup Icon="@Icons.Material.Filled.People" IconColor="Color.Surface"  Title="Student" Expanded="true">
+        <MudNavLink  Href="/students"  Match="NavLinkMatch.Prefix">Student List</MudNavLink>
+        <MudNavLink Href="/addstudent"  Match="NavLinkMatch.Prefix">Add New Student</MudNavLink>
+    </MudNavGroup>
+    <MudNavGroup Icon="@Icons.Material.Filled.Class" IconColor="Color.Surface"  Title="Class" Expanded="true">
+        <MudNavLink Href="/classes"  Match="NavLinkMatch.Prefix">Class List</MudNavLink>
+        <MudNavLink Href="/addclass"  Match="NavLinkMatch.Prefix">Add New Class</MudNavLink>
     </MudNavGroup>
     <MudNavLink Href="/about"  Match="NavLinkMatch.Prefix">About</MudNavLink>
 </MudNavMenu>

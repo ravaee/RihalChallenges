@@ -1,40 +1,21 @@
 ﻿@page "/Students"
+@inherits Studentsbase
 
-@inject StudentService studentService
+<br />
+<h3>Students Info</h3>
 
-@if(_Students is not null)
-{
-    <NavLink class="nav-link" href="AddStudent">
-        <span class="oi oi-plus" aria-hidden="true">Add New Student</span>
+<NavLink class="nav-link" href="AddStudent">
+    <MudButton Variant="Variant.Filled" Color="Color.Primary">Add New Student</MudButton>
+</NavLink>
+<br />
 
-    </NavLink>
-    
-}
-
-<h1>Students Info</h1>
 @if (_Students is null)
 {
     <p><em>Loading... !</em></p>
 }
 else
 {
-
-    <StudentList Students="@_Students"></StudentList>
-
+    <StudentList Students="@_Students" OnDeleteClicked="OnDeleteClickedHandler" OnUpdateClicked="OnUpdateClickedHandler">
+    </StudentList>
 }
 
-
-@code {
-
-    List<Common.Models.Student>? _Students;
-
-    protected async override Task OnAfterRenderAsync(bool firstRender)
-    {
-        if (firstRender)
-        {
-            _Students = (await Task.Run(() => studentService.GetAll())).ToList();
-            StateHasChanged();
-        }
-        
-    }
-}

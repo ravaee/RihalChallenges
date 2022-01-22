@@ -1,0 +1,20 @@
+﻿@page "/Classes"
+@inherits ClassesBase
+
+<br />
+<h3>Class List</h3>
+
+<NavLink class="nav-link" href="AddClass">
+    <MudButton Variant="Variant.Filled" Color="Color.Primary">Add New Class</MudButton>
+</NavLink>
+<br />
+
+@if (_Classes is null)
+{
+    <p><em>Loading... !</em></p>
+}
+else
+{
+    <ClassList Classes="@_Classes" OnDeleteClicked="OnDeleteClickedHandler" OnUpdateClicked="OnUpdateClickedHandler"></ClassList>
+}
+

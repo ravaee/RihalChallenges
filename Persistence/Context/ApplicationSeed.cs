@@ -1,4 +1,5 @@
 ﻿using Common.Models;
+using Microsoft.AspNetCore.Identity;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -45,6 +46,26 @@ namespace Persistence.Context
                 await _context.Classes.AddRangeAsync(classes);
                 await _context.SaveChangesAsync();
 
+            }
+        }
+
+        public static async Task SeedAdminUser(UserManager<ApplicationUser> userManager)
+        {
+
+            ApplicationUser AdminUser = new ApplicationUser()
+            {
+
+                UserName = "AdminUser@Email.com",
+                Email = "AdminUser@Email.com",
+                EmailConfirmed = true,
+                PhoneNumberConfirmed = true
+            };
+
+            var user = await userManager.FindByEmailAsync("test@gmail.com");
+
+            if (user == null)
+            {
+                await userManager.CreateAsync(AdminUser, "Abcd@1234");
             }
         }
 

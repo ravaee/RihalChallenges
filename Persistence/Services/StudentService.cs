@@ -1,56 +1,75 @@
 ﻿using AutoMapper;
+using Common.Extenstions;
 using Common.Models;
 using Persistence.Context;
+using Persistence.Specifications;
+using Persistence.Specifications.EntitySpecs;
 using Persistence.UnitOfWork;
 
 namespace Persistence.Services
 {
-    public class StudentService: BaseService
+    public class StudentService : BaseService
     {
-        
-        public StudentService(IMapper mapper, IRepositoryUnitOfWork unitOfWork): base(mapper, unitOfWork)
+        public StudentService(IMapper mapper, IRepositoryUnitOfWork unitOfWork) : base(mapper, unitOfWork)
         {
         }
 
         public async Task<bool> Create(StudentDTO student)
         {
-            try
-            {
-                var model = _mapper.Map<Student>(student);
 
+            var model = _mapper.Map<Student>(student);
 
-                await _unitOfWork.StudentRepository.Add(model);
-                await _unitOfWork.Complete();
+            await _unitOfWork.StudentRepository.Add(model);
+            await _unitOfWork.Complete();
 
-            }
-            catch (Exception ex)
-            {
-                return false;
-            }
-            
             return true;
         }
 
-        public async Task<IEnumerable<Student>> GetAll()
+        public async Task<IEnumerable<StudentDTO>> GetAll()
         {
 
-            Thread.Sleep(1000);
-
-            //var students = await _unitOfWork.StudentRepository.GetAll();
-
-            //return students;
-
-            Class @class = new Class() { Name = "A" };
-            Country country = new Country() { Name = "Iran" };
-
-            return new List<Student>()
-            {
-                new Student() { Name = "Mohamad", BirthDate = new DateTime(1994, 09,21), Country = country, Class = @class},
-                new Student() { Name = "Ali", BirthDate = new DateTime(1994, 09,21), Country = country, Class = @class},
-                new Student(){ Name = "Hasan", BirthDate = new DateTime(1994, 09,21), Country = country, Class = @class},
-            };
+            var students = await _unitOfWork.StudentRepository.
+                ListAsync(new StudentWithCountriesAndClassSpecification());
 
 
+            return students.ToListDTO(_mapper);
         }
+
+        public async Task<StudentDTO> Get(int id)
+        {
+            var student = await _unitOfWork.StudentRepository.Get(id);
+
+            return student.ToDTO(_mapper);
+        }
+
+        public async Task<bool> Remove(int? studentId)
+        {
+            if (studentId == null)
+            {
+                return false;
+            }
+
+            var _student = await _unitOfWork.StudentRepository.Get(studentId.Value);
+
+            if (_student == null)
+            {
+                return false;
+            }
+
+            _unitOfWork.StudentRepository.Remove(_student);
+            await _unitOfWork.Complete();
+
+            return true;
+        }
+
+        public async Task<bool> Update(StudentDTO dto)
+        {
+            _unitOfWork.StudentRepository.Update(dto.ToPOCO(_mapper));
+
+            await _unitOfWork.Complete();
+
+            return true;
+        }
+
     }
 }

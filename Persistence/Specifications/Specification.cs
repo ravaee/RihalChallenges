@@ -9,20 +9,27 @@ namespace Persistence.Specifications
     {
         public Specification()
         {
+
         }
 
-        public Specification(Expression<Func<T, bool>> criteria)
-        {
-            Criteria = criteria;
-        }
 
-        public Expression<Func<T, bool>> Criteria { get; }
+        public Expression<Func<T, bool>> Criteria { get; set; }
 
-        public List<Expression<Func<T, object>>> Includes { get; } = new List<Expression<Func<T, object>>>();
+        public List<Expression<Func<T, object>>> Includes { get; } = new();
 
-        protected void AddInclude(Expression<Func<T, object>> includeExpression)
+        public List<string> StringIncludes { get; } = new();
+
+        public void AddInclude(Expression<Func<T, object>> includeExpression)
         {
             Includes.Add(includeExpression);
+        }
+        public void AddInclude(string includeString)
+        {
+            StringIncludes.Add(includeString);
+        }
+        public void AddCriteria(Expression<Func<T, bool>> criteria)
+        {
+            Criteria = criteria;
         }
     }
 }

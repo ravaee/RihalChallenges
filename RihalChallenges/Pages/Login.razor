@@ -1,0 +1,77 @@
+﻿@page "/login"
+@using Common.DTOs
+@inject AccountService accountService
+@inject NavigationManager navigationManager
+
+
+
+<PageTitle>Hello, Rihal Admin</PageTitle>
+
+<br />
+<h3>Login To Students Portal</h3>
+<small>Developed for Rihal`s Code-Challenge By <b>Mohamad Ravaei</b> </small>
+
+<hr />
+
+<MudCard>
+    <MudForm Model="@model" @ref="@form">
+        <MudCardContent>
+            <MudAlert Severity="MudBlazor.Severity.Info">Test Email: <b>test@gmail.com</b> and Password: <b>Abcd@1234</b></MudAlert>
+            <br />
+            <MudTextField @bind-Value="@model.Email"
+                            Validation="@(userValidator.ValidateValue)"
+                            For="@(() => model.Email)"
+                            Immediate="true"
+                            Label="Email" />
+
+            <MudTextField @bind-Value="@model.Password"
+                            Validation="@(userValidator.ValidateValue)"
+                            For="@(() => model.Password)"
+                            InputType="InputType.Password"
+                            Immediate="true"
+                            Label="Password" />
+
+        </MudCardContent>
+
+    </MudForm>
+    <MudCardActions>
+        <MudButton Variant="Variant.Filled" Color="Color.Primary" Class="ml-auto" OnClick="@(async () => await Submit())">Login</MudButton>
+    </MudCardActions>
+</MudCard>
+
+
+
+@code {
+
+    [Inject]
+    ISnackbar Snackbar { get; set; }
+
+    LoginDto model = new LoginDto();
+    MudForm form;
+
+    UserValidator userValidator = new UserValidator();
+
+    public async Task Submit()
+    {
+        await form.Validate();
+
+        if (form.IsValid)
+        {
+            string result = await accountService.Login(model);
+
+            if (!string.IsNullOrEmpty(result))
+            {
+                navigationManager.NavigateTo($"/login?key={result}", true);
+            }
+            else
+            {
+                Snackbar.Add("Email or Password is wrong!");
+            }
+        }
+        else
+        {
+            Snackbar.Add("Please feel the form correctly.");
+        }
+
+    }
+}

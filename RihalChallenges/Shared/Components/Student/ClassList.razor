@@ -1,17 +1,14 @@
-﻿<MudTable Items="@Students" FixedHeader="true" FixedFooter="true" Height="calc(100vh - 200px)">
+﻿<MudTable Items="@Classes" FixedHeader="true" FixedFooter="true" Height="calc(100vh - 200px)">
     <HeaderContent>
-        <MudTh>Student FullName</MudTh>
-        <MudTh>Country</MudTh>
-        <MudTh>Class</MudTh>
-        <MudTh>BirthDate</MudTh>
+        <MudTh>Class Name</MudTh>
+        <MudTh>Student Count</MudTh>
         <MudTh>Actions</MudTh>
     </HeaderContent>
     <RowTemplate>
-        <MudTd DataLabel="Student FullName">@context.Name</MudTd>
-        <MudTd DataLabel="Country">@context.Country.Name</MudTd>
-        <MudTd DataLabel="Class">@context.Class.Name</MudTd>
-        <MudTd DataLabel="BirthDate">@context.BirthDate</MudTd>
+        <MudTd DataLabel="Class Name">@context.Name</MudTd>
+        <MudTd DataLabel="Country">@context.Students.Count</MudTd>
         <MudTd>
+
             <MudButton Variant="Variant.Filled" Color="Color.Primary" Class="ml-auto"
                         @onclick="() => UpdateClicked(context.Id)">
                 Update
@@ -20,8 +17,8 @@
                         @onclick="() => DeleteClicked(context.Id)">
                 Delete
             </MudButton>
-        </MudTd>
 
+        </MudTd>
     </RowTemplate>
     <FooterContent>
     </FooterContent>
@@ -36,17 +33,17 @@
     [Parameter]
     public EventCallback<int> OnUpdateClicked { get; set; }
 
-    public void DeleteClicked(int studentId)
+    public void DeleteClicked(int classId)
     {
-        OnDeleteClicked.InvokeAsync(studentId);
+        OnDeleteClicked.InvokeAsync(classId);
     }
 
-    public void UpdateClicked(int studentId)
+    public void UpdateClicked(int classId)
     {
-        OnUpdateClicked.InvokeAsync(studentId);
+        OnUpdateClicked.InvokeAsync(classId);
     }
 
     [Parameter]
-    public List<Common.Models.StudentDTO> Students { get; set; }
+    public List<Common.Models.ClassDTO> Classes { get; set; }
 
 }

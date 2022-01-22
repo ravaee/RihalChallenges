@@ -18,7 +18,15 @@ namespace Persistence.Specifications
                 query = query.Where(spec.Criteria);
             }
 
-            query = spec.Includes.Aggregate(query, (current, include) => current.Include(include));
+            if(spec.StringIncludes != null)
+            {
+                query = spec.StringIncludes.Aggregate(query, (current, include) => current.Include(include));
+            }
+
+            if (spec.Includes != null)
+            {
+                query = spec.Includes.Aggregate(query, (current, include) => current.Include(include));
+            }           
 
             return query;
         }

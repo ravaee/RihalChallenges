@@ -1,4 +1,5 @@
-﻿using System;
+﻿using AutoMapper;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Text;
@@ -17,5 +18,6 @@ namespace Common.Models
 
         public virtual Class Class { get; set; }
         public virtual Country Country { get; set; }
+
     }
 }

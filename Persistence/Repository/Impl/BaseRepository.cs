@@ -1,6 +1,8 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Common.Models;
+using Microsoft.EntityFrameworkCore;
 using Persistence.Context;
 using Persistence.Interface.Repository;
+using Persistence.Specifications;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,7 +12,7 @@ using System.Threading.Tasks;
 
 namespace Persistence.Repository.Impl
 {
-    public class BaseRepository<TEntity> : IBaseRepository<TEntity> where TEntity : class
+    public class BaseRepository<TEntity> : IBaseRepository<TEntity> where TEntity : BaseModel
     {
         protected readonly ApplicationDbContext Context;
         public BaseRepository(ApplicationDbContext context)
@@ -60,6 +62,16 @@ namespace Persistence.Repository.Impl
 
         public void Update(TEntity entity)
         {
+            var local = Context.Set<TEntity>()
+                   .Local
+                   .FirstOrDefault(e => e.Id.Equals(entity.Id));
+
+            if (local != null)
+            {
+
+                Context.Entry(local).State = EntityState.Detached;
+            }
+
             Context.Entry(entity).State = EntityState.Modified;
         }
 
@@ -68,5 +80,15 @@ namespace Persistence.Repository.Impl
             Context.UpdateRange(entities);
         }
 
+        public async Task<IEnumerable<TEntity>> ListAsync(ISpecification<TEntity> spec)
+        {
+            return await ApplySpecification(spec).ToListAsync();
+        }
+
+
+        private IQueryable<TEntity> ApplySpecification(ISpecification<TEntity> spec)
+        {
+            return SpecificationEvaluator<TEntity>.GetQuery(Context.Set<TEntity>().AsNoTracking().AsQueryable(), spec);
+        }
     }
 }

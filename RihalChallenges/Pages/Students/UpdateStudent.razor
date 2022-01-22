@@ -1,8 +1,8 @@
-﻿@page "/AddStudent"
-@inherits AddStudentBase
+﻿@page "/Student/Update/{Id}"
+@inherits UpdateStudentBase
 
 <br />
-<h3>Add New Student</h3>
+<h3>Update Student</h3>
 <hr />
 
 <MudCard>
@@ -34,7 +34,6 @@
 							  Label="Name" />
             
             <br />
-
             <MudDatePicker  @bind-Date="@model.BirthDate"
                             MinDate = "@(new DateTime(1900,01,01))"
                             MaxDate = "@(DateTime.Now)"
@@ -42,12 +41,18 @@
                             For="@(()=> model.BirthDate)"
                             Label="Birth Date"/>
 
-        </MudCardContent>
 
+        </MudCardContent>
 	</MudForm>
     <MudCardActions>
         <MudButton Variant="Variant.Filled" Color="Color.Primary" Class="ml-auto" OnClick="@(async () => await Submit())">Save</MudButton>
     </MudCardActions>
 </MudCard>
+
+@code {
+
+
+
+}
 
 

@@ -1,8 +1,10 @@
-﻿@page "/AddClass"
-@inherits AddClassBase
+﻿@page "/Class/Update/{Id}"
+@inject ClassService classService
+@inject NavigationManager NavigationManager
+@inherits UpdateClassBase
 
 <br />
-<h3>Add New Class</h3>
+<h3>Update Class</h3>
 <hr />
 
 <MudCard>
@@ -15,7 +17,6 @@
 							  Immediate="true"
 							  Label="Name" />
             
-
         </MudCardContent>
 	</MudForm>
     <MudCardActions>
@@ -23,8 +24,5 @@
     </MudCardActions>
 </MudCard>
 
-@code {
 
-
-}
 
