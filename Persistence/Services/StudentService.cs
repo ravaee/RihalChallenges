@@ -10,6 +10,7 @@ namespace Persistence.Services
 {
     public class StudentService : BaseService
     {
+
         public StudentService(IMapper mapper, IRepositoryUnitOfWork unitOfWork) : base(mapper, unitOfWork)
         {
         }

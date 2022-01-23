@@ -12,7 +12,7 @@ namespace Persistence.Services
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly SignInManager<ApplicationUser> _signInManager;
         private readonly ApplicationDbContext _context;
-        
+
 
         public DataService(SignInManager<ApplicationUser> signInManager,
             UserManager<ApplicationUser> userManager, ApplicationDbContext context)
@@ -22,8 +22,8 @@ namespace Persistence.Services
             _signInManager = signInManager;
         }
 
-      
-        public async Task refreshDatabase()
+
+        public async Task RefreshDatabase()
         {
             //Delete All classes
             var _classes = await _context.Classes.ToListAsync();
@@ -38,8 +38,29 @@ namespace Persistence.Services
 
             await ApplicationSeed.SeedCountries(_context);
             await ApplicationSeed.SeedClasses(_context);
+
             await ApplicationSeed.SeedAdminUser(_userManager);
         }
+
+        public static async Task RefreshTestDatabase(ApplicationDbContext _context)
+        {
+            //Delete All classes
+            var _classes = await _context.Classes.ToListAsync();
+            _context.Classes.RemoveRange(_classes);
+
+
+            //Delete All Students
+            var _students = await _context.Students.ToListAsync();
+            _context.Students.RemoveRange(_students);
+
+            await _context.SaveChangesAsync();
+
+            await ApplicationSeed.SeedCountries(_context);
+            await ApplicationSeed.SeedClasses(_context);
+            await ApplicationSeed.SeedStudents(_context);
+        }
+
+
 
     }
 }

@@ -1,5 +1,6 @@
 ﻿using Common.Models;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -70,6 +71,22 @@ namespace Persistence.Context
             }
         }
 
+        public static async Task SeedStudents(ApplicationDbContext _context)
+        {
+            if(!(await _context.Students.AnyAsync()))
+            {
+                var Result = await _context.Students.AddAsync(new Common.Models.Student()
+                {
+                    BirthDate = new DateTime(1994, 09, 21),
+                    ClassId = _context.Classes.ToList().First().Id,
+                    CountryId = _context.Countries.ToList().First().Id,
+                    Name = "Mohamad",
+                    CreateDate = DateTime.Now,
+                    ModifiedDate = DateTime.Now,
+                });
+            }
+
+        }
         
     }
 }

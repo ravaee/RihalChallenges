@@ -20,7 +20,7 @@ namespace RihalChallenges.Pages
 
         protected async Task SeedAgain()
         {
-            await dataService.refreshDatabase();
+            await dataService.RefreshDatabase();
             await GetOverviewData();
         }
 
