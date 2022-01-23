@@ -38,7 +38,7 @@ namespace Persistence.Services
 
             await ApplicationSeed.SeedCountries(_context);
             await ApplicationSeed.SeedClasses(_context);
-
+            await ApplicationSeed.SeedStudents(_context);
             await ApplicationSeed.SeedAdminUser(_userManager);
         }
 

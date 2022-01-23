@@ -38,7 +38,6 @@ namespace RihalTest.Services
             }).Result;
 
 
-            Assert.True(Result);
 
             var CreatedStudent = _studentService.GetAll()
                 .Result.Where(a => a.Name == "MohamadRavaei").FirstOrDefault();
@@ -60,7 +59,6 @@ namespace RihalTest.Services
 
             var Update = _studentService.Update(DestinationStudent).Result;
 
-            Assert.True(Update);
 
             var Updated = _studentService.GetAll().Result.Where(a => a.Name == "Michael").FirstOrDefault();
 

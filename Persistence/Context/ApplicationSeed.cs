@@ -84,6 +84,8 @@ namespace Persistence.Context
                     CreateDate = DateTime.Now,
                     ModifiedDate = DateTime.Now,
                 });
+
+                await _context.SaveChangesAsync();
             }
 
         }
