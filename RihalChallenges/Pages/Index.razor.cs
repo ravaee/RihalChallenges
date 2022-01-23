@@ -14,12 +14,22 @@ namespace RihalChallenges.Pages
         {
             if (firstRender)
             {
-                Countries = (await Task.Run(() => countryService.GetAllWithAtListOneStudent())).ToList();
-                Classes = (await Task.Run(() => classService.GetAllWithAtListOneStudent())).ToList();
-                StudentAvarage = await Task.Run(() => studentService.AverageAge());
-                StateHasChanged();
+                await GetOverviewData();
             }
+        }
 
+        protected async Task SeedAgain()
+        {
+            await dataService.refreshDatabase();
+            await GetOverviewData();
+        }
+
+        private async Task GetOverviewData()
+        {
+            Countries = (await Task.Run(() => countryService.GetAllWithAtListOneStudent())).ToList();
+            Classes = (await Task.Run(() => classService.GetAllWithAtListOneStudent())).ToList();
+            StudentAvarage = await Task.Run(() => studentService.AverageAge());
+            StateHasChanged();
         }
     }
 }

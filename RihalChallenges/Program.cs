@@ -54,11 +54,14 @@ void ConfigureServices(IServiceCollection services)
     services.AddScoped<AuthenticationStateProvider, RevalidatingIdentityAuthenticationStateProvider<ApplicationUser>>();
     services.AddRazorPages();
     services.AddServerSideBlazor();
+
     services.AddScoped<IRepositoryUnitOfWork, RepositoryUnitOfWork>(); 
     services.AddScoped<StudentService>();
     services.AddScoped<ClassService>();
     services.AddScoped<CountryService>();
     services.AddScoped<AccountService>();
+    services.AddScoped<DataService>();
+    
 }
 
 void Configure(WebApplication app)

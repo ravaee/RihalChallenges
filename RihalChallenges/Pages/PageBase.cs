@@ -25,6 +25,8 @@ namespace RihalChallenges.Pages
         public CountryService countryService { get; set; }
         [Inject]
         public StudentService studentService { get; set; }
+        [Inject]
+        public DataService dataService { get; set; }
 
         //form
         public MudForm form;

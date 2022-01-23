@@ -5,53 +5,75 @@
 <PageTitle>Dashboard</PageTitle>
 
 <br />
-<MudText  Typo="Typo.h4"><b>Statistics to display on website</b></MudText>
-<MudAlert Severity="MudBlazor.Severity.Info">It shows the country which has at least 1 <b>Student</b></MudAlert>
+<MudText Typo="Typo.h4"><b>Statistics to display on website</b></MudText>
+<br />
+<MudAlert Severity="MudBlazor.Severity.Error">You can use the button <b>below</b> to Seed the database again!</MudAlert>
+<br />
+<MudButton Variant="Variant.Filled" Color="Color.Error" Class="ml-auto" OnClick="@(async () => await SeedAgain())">Seed Database!</MudButton>
 <hr />
 
-@if(StudentAvarage == 0)
+@if (StudentAvarage == 0 && @Classes.Sum(a => a.Students.Count) == 0)
 {
-    <MudText  Typo="Typo.h5">There are no students to show the Avarage.</MudText>
-}else{
-    <MudText  Typo="Typo.h5">Average age of students: @StudentAvarage.ToString("#.#")</MudText>
+    <MudText Typo="Typo.h5">There are no students to show the Avarage.</MudText>
+    <br />
+    <MudButton Variant="Variant.Filled" Color="Color.Primary" Class="ml-auto" OnClick="@(() => NavigationManager.NavigateTo("AddStudent"))">Add Student</MudButton>
+}
+else
+{
+    if (StudentAvarage == 0)
+    {
+        <MudText Typo="Typo.h5">Average age of students is lower than 1 year old.</MudText>
+    }
+    else
+    {
+        <MudText Typo="Typo.h5">Average age of students: @StudentAvarage.ToString("#.#")</MudText>
+    }
+
+    <MudText Typo="Typo.subtitle1">Total student count is: <b>@Classes.Sum(a => a.Students.Count)</b></MudText>
+    <br />
+
+    <MudText Typo="Typo.h5">Count of students per country</MudText>
+    <MudAlert Severity="MudBlazor.Severity.Info">It shows the country which has at least 1 <b>Student</b></MudAlert>
+    <br />
+
+    <MudTable Items="@Countries" FixedHeader="true" FixedFooter="true" Height="200px">
+        <HeaderContent>
+            <MudTh>Country</MudTh>
+            <MudTh>Student Count</MudTh>
+        </HeaderContent>
+        <RowTemplate>
+            <MudTd DataLabel="Country">@context.Name</MudTd>
+            <MudTd DataLabel="Student Count">@context.Students.Count</MudTd>
+        </RowTemplate>
+        <FooterContent>
+        </FooterContent>
+    </MudTable>
+
+    <br />
+    <MudText Typo="Typo.h5">Count of students per <b>Class</b></MudText>
+    <br />
+
+    <MudTable Items="@Classes" FixedHeader="true" FixedFooter="true" Height="200px">
+        <HeaderContent>
+            <MudTh>Class</MudTh>
+            <MudTh>Student Count</MudTh>
+        </HeaderContent>
+        <RowTemplate>
+            <MudTd DataLabel="Class Name">@context.Name</MudTd>
+            <MudTd DataLabel="Student Count">@context.Students.Count</MudTd>
+        </RowTemplate>
+        <FooterContent>
+        </FooterContent>
+    </MudTable>
+    <br />
+
 }
 
-<MudText  Typo="Typo.subtitle1">Total student count is: <b>@Classes.Sum(a => a.Students.Count)</b></MudText>
-<br />
 
-<MudText  Typo="Typo.h5">Count of students per country</MudText>
-<br />
 
-<MudTable Items="@Countries" FixedHeader="true" FixedFooter="true" Height="200px">
-    <HeaderContent>
-        <MudTh>Country</MudTh>
-        <MudTh>Student Count</MudTh>
-    </HeaderContent>
-    <RowTemplate>
-        <MudTd DataLabel="Class Name">@context.Name</MudTd>
-        <MudTd DataLabel="Country">@context.Students.Count</MudTd>
-    </RowTemplate>
-    <FooterContent>
-    </FooterContent>
-</MudTable>
+@code {
 
-<br />
-<MudText  Typo="Typo.h5">Count of students per <b>Class</b></MudText>
-<br />
-
-<MudTable Items="@Classes" FixedHeader="true" FixedFooter="true" Height="200px">
-    <HeaderContent>
-        <MudTh>Class</MudTh>
-        <MudTh>Student Count</MudTh>
-    </HeaderContent>
-    <RowTemplate>
-        <MudTd DataLabel="Class Name">@context.Name</MudTd>
-        <MudTd DataLabel="Country">@context.Students.Count</MudTd>
-    </RowTemplate>
-    <FooterContent>
-    </FooterContent>
-</MudTable>
-<br />
+}
 
 
 

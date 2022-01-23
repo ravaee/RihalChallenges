@@ -32,9 +32,6 @@ namespace Persistence.Context
 
         public static async Task SeedClasses(ApplicationDbContext _context)
         {
-            var _classes = _context.Classes.ToList();
-            _context.Classes.RemoveRange(_classes);
-            await _context.SaveChangesAsync();
 
             if (_context.Classes.Count() == 0)
             {
