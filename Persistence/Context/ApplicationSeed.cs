@@ -32,14 +32,18 @@ namespace Persistence.Context
 
         public static async Task SeedClasses(ApplicationDbContext _context)
         {
+            var _classes = _context.Classes.ToList();
+            _context.Classes.RemoveRange(_classes);
+            await _context.SaveChangesAsync();
+
             if (_context.Classes.Count() == 0)
             {
                 var classes = new List<Class>() 
                 { 
-                    new Class() { Name = "Data Structure" },
-                    new Class() { Name = "Web Design" },
-                    new Class() { Name = "Game Development" },
-                    new Class() { Name = ".NET" },
+                    new Class() { Name = "Data Structure", CreateDate = DateTime.Now, ModifiedDate = DateTime.Now },
+                    new Class() { Name = "Web Design", CreateDate = DateTime.Now, ModifiedDate = DateTime.Now },
+                    new Class() { Name = "Game Development" , CreateDate = DateTime.Now, ModifiedDate = DateTime.Now },
+                    new Class() { Name = ".NET" , CreateDate = DateTime.Now, ModifiedDate = DateTime.Now },
                 };
 
 

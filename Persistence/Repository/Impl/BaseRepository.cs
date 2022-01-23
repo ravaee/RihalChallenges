@@ -21,6 +21,9 @@ namespace Persistence.Repository.Impl
         }
         public async Task Add(TEntity entity)
         {
+            entity.CreateDate = DateTime.Now;
+            entity.ModifiedDate = DateTime.Now;
+
             await Context.Set<TEntity>().AddAsync(entity);
         }
 
@@ -62,6 +65,8 @@ namespace Persistence.Repository.Impl
 
         public void Update(TEntity entity)
         {
+            entity.ModifiedDate = DateTime.Now;
+
             var local = Context.Set<TEntity>()
                    .Local
                    .FirstOrDefault(e => e.Id.Equals(entity.Id));

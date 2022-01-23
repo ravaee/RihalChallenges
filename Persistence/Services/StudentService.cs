@@ -44,8 +44,14 @@ namespace Persistence.Services
 
         public async Task<double> AverageAge()
         {
-            var studentsBirthDateAvarage = ((await _unitOfWork.StudentRepository.GetAll()).Select(a => a.BirthDate).Select(a => (DateTime.Now.Year - a.Year))).Average();
-            return studentsBirthDateAvarage;
+            var studentsBirthDate = ((await _unitOfWork.StudentRepository.GetAll()).Select(a => a.BirthDate).Select(a => (DateTime.Now.Year - a.Year)));
+
+            if(studentsBirthDate.Count() > 0)
+            {
+                return studentsBirthDate.Average();
+            }
+
+            return 0;        
         }
 
         public async Task<bool> Remove(int? studentId)

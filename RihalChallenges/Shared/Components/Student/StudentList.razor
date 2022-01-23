@@ -4,6 +4,8 @@
         <MudTh>Country</MudTh>
         <MudTh>Class</MudTh>
         <MudTh>BirthDate</MudTh>
+        <MudTh>Create Date</MudTh>
+        <MudTh>Modified Date</MudTh>
         <MudTh>Actions</MudTh>
     </HeaderContent>
     <RowTemplate>
@@ -11,6 +13,8 @@
         <MudTd DataLabel="Country">@context.Country.Name</MudTd>
         <MudTd DataLabel="Class">@context.Class.Name</MudTd>
         <MudTd DataLabel="BirthDate">@context.BirthDate.Value.ToShortDateString()</MudTd>
+        <MudTd DataLabel="Created">@context.CreateDate</MudTd>
+        <MudTd DataLabel="Modified">@context.ModifiedDate</MudTd>
         <MudTd>
             <MudButton Variant="Variant.Filled" Color="Color.Primary" Class="ml-auto"
                         @onclick="() => UpdateClicked(context.Id)">
@@ -21,7 +25,6 @@
                 Delete
             </MudButton>
         </MudTd>
-
     </RowTemplate>
     <FooterContent>
     </FooterContent>

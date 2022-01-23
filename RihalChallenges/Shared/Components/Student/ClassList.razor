@@ -2,11 +2,15 @@
     <HeaderContent>
         <MudTh>Class Name</MudTh>
         <MudTh>Student Count</MudTh>
+        <MudTh>Create Date</MudTh>
+        <MudTh>Modified Date</MudTh>
         <MudTh>Actions</MudTh>
     </HeaderContent>
     <RowTemplate>
         <MudTd DataLabel="Class Name">@context.Name</MudTd>
-        <MudTd DataLabel="Country">@context.Students.Count</MudTd>
+        <MudTd DataLabel="Students">@context.Students.Count</MudTd>
+        <MudTd DataLabel="Created">@context.CreateDate</MudTd>
+        <MudTd DataLabel="Modified">@context.ModifiedDate</MudTd>
         <MudTd>
 
             <MudButton Variant="Variant.Filled" Color="Color.Primary" Class="ml-auto"
