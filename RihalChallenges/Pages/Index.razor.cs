@@ -8,6 +8,7 @@ namespace RihalChallenges.Pages
 
         protected List<CountryDTO> Countries = new List<CountryDTO>();
         protected List<ClassDTO> Classes = new List<ClassDTO>();
+        protected double StudentAvarage = 0;
 
         protected async override Task OnAfterRenderAsync(bool firstRender)
         {
@@ -15,6 +16,7 @@ namespace RihalChallenges.Pages
             {
                 Countries = (await Task.Run(() => countryService.GetAllWithAtListOneStudent())).ToList();
                 Classes = (await Task.Run(() => classService.GetAllWithAtListOneStudent())).ToList();
+                StudentAvarage = await Task.Run(() => studentService.AverageAge());
                 StateHasChanged();
             }
 

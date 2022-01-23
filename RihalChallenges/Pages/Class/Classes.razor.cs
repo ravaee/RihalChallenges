@@ -7,11 +7,17 @@
         protected async Task OnDeleteClickedHandler(int classId)
         {
 
+            if(_Classes.Count < 2)
+            {
+                Snackbar.Add("At least one class must remain.");
+                return;
+            }
+
             var result = await classService.Remove(classId);
 
             if (result)
             {
-                Snackbar.Add(classId.ToString());
+                Snackbar.Add($"Class with Id {classId.ToString()} and its students has been deleted!");
 
                 _Classes = (await Task.Run(() => classService.GetAllWithStudents())).ToList();
 

@@ -10,7 +10,7 @@
         <MudTd DataLabel="Student FullName">@context.Name</MudTd>
         <MudTd DataLabel="Country">@context.Country.Name</MudTd>
         <MudTd DataLabel="Class">@context.Class.Name</MudTd>
-        <MudTd DataLabel="BirthDate">@context.BirthDate</MudTd>
+        <MudTd DataLabel="BirthDate">@context.BirthDate.Value.ToShortDateString()</MudTd>
         <MudTd>
             <MudButton Variant="Variant.Filled" Color="Color.Primary" Class="ml-auto"
                         @onclick="() => UpdateClicked(context.Id)">

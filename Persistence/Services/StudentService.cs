@@ -42,6 +42,12 @@ namespace Persistence.Services
             return student.ToDTO(_mapper);
         }
 
+        public async Task<double> AverageAge()
+        {
+            var studentsBirthDateAvarage = ((await _unitOfWork.StudentRepository.GetAll()).Select(a => a.BirthDate).Select(a => (DateTime.Now.Year - a.Year))).Average();
+            return studentsBirthDateAvarage;
+        }
+
         public async Task<bool> Remove(int? studentId)
         {
             if (studentId == null)

@@ -16,18 +16,20 @@
 <MudCard>
     <MudForm Model="@model" @ref="@form">
         <MudCardContent>
-            <MudAlert Severity="MudBlazor.Severity.Info">Test Email: <b>test@gmail.com</b> and Password: <b>Abcd@1234</b></MudAlert>
+            <MudAlert Severity="MudBlazor.Severity.Info">Test Email: <b>adminuser@email.com</b> and Password: <b>Abcd@1234</b></MudAlert>
             <br />
             <MudTextField @bind-Value="@model.Email"
                             Validation="@(userValidator.ValidateValue)"
                             For="@(() => model.Email)"
                             Immediate="true"
+                            Variant="Variant.Outlined" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Email"
                             Label="Email" />
-
+                            <br />
             <MudTextField @bind-Value="@model.Password"
                             Validation="@(userValidator.ValidateValue)"
                             For="@(() => model.Password)"
                             InputType="InputType.Password"
+                            Variant="Variant.Outlined" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Lock"
                             Immediate="true"
                             Label="Password" />
 
@@ -49,7 +51,11 @@
     LoginDto model = new LoginDto();
     MudForm form;
 
+
+
     UserValidator userValidator = new UserValidator();
+
+
 
     public async Task Submit()
     {
