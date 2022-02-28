@@ -1,6 +1,5 @@
 # RihalChallenges
 
-A sample project to be evaluated by Rihal Company
 
 Project Hosted on <https://rihalchallenge.herokuapp.com/>
 
